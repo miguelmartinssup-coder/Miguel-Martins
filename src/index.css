@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", sans-serif;
+  --font-mono: "Space Mono", monospace;
+}
+
+@layer base {
+  :root {
+    --text-hero: clamp(3.5rem, 14vw, 11rem);
+    --text-section: clamp(2.5rem, 8vw, 9rem);
+    --text-projects: clamp(2rem, 6vw, 8rem);
+    --text-card-title: clamp(1.5rem, 4vw, 3.75rem);
+  }
+
+  html, body {
+    @apply overflow-x-hidden max-w-[100vw];
+  }
+
+  body {
+    @apply bg-[#050505] text-white antialiased selection:bg-white selection:text-black;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Cfilter id='noiseFilter'%3%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3%3C/filter%3%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3%3C/svg%3%3E");
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display font-bold tracking-tighter;
+  }
+
+  @media (pointer: fine) {
+    * { cursor: none !important; }
+  }
+}
+
+@layer utilities {
+  .text-reveal {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+
+  @keyframes scroll-line {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  .animate-scroll-line {
+    animation: scroll-line 2.5s ease-in-out infinite;
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
