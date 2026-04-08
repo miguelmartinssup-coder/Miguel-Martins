@@ -16,11 +16,11 @@ import Loader from './components/ui/Loader';
 
 // Sections
 import Hero from './components/sections/Hero';
-import Metrics from './components/sections/Metrics';
+const ValueProp = lazy(() => import('./components/sections/ValueProp'));
 const Projects = lazy(() => import('./components/sections/Projects'));
-const Skills = lazy(() => import('./components/sections/Skills'));
+const Method = lazy(() => import('./components/sections/Method'));
 const About = lazy(() => import('./components/sections/About'));
-const Contact = lazy(() => import('./components/sections/Contact'));
+const FinalCTA = lazy(() => import('./components/sections/FinalCTA'));
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -59,13 +59,12 @@ export default function App() {
               <Hero />
             </div>
 
-            <Metrics />
-
             <Suspense fallback={<div className="h-screen bg-zinc-950" />}>
+              <ValueProp />
               <Projects />
-              <Skills />
+              <Method />
               <About />
-              <Contact />
+              <FinalCTA />
             </Suspense>
 
             <Footer />

@@ -18,7 +18,7 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }
+    transition: { duration: 0.8 }
   }
 };
 
@@ -36,10 +36,10 @@ export default function Projects() {
           <motion.div variants={itemVariants} className="max-w-2xl">
             <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.2em] mb-4 block">PORTFÓLIO DE ENGENHARIA</span>
             <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-6">
-              SOLUÇÕES DE ALTO IMPACTO
+              ESTUDOS DE <span className="text-zinc-800">CASO.</span>
             </h2>
             <p className="text-lg text-zinc-400">
-              Transformando desafios operacionais complexos em sistemas escaláveis e eficientes.
+              Soluções reais entregues para problemas reais. Foco total em ROI e eficiência operacional.
             </p>
           </motion.div>
           <motion.div variants={itemVariants} className="text-zinc-500 font-mono text-sm">

@@ -5,9 +5,8 @@ import { Menu, X, ArrowUpRight } from 'lucide-react';
 
 const NAV_LINKS = [
   { id: 'work', label: 'PROJETOS' },
-  { id: 'skills', label: 'HABILIDADES' },
   { id: 'about', label: 'SOBRE' },
-  { id: 'contact', label: 'CONTATO' },
+  { id: 'contact', label: 'DIAGNÓSTICO' },
 ];
 
 export default function Navigation() {
@@ -69,7 +68,7 @@ export default function Navigation() {
               href="#contact"
               className="hidden md:flex items-center gap-2 px-6 py-2.5 rounded-full bg-white text-black text-[10px] font-bold tracking-widest hover:bg-zinc-200 transition-colors"
             >
-              HIRE ME <ArrowUpRight size={14} />
+              DIAGNÓSTICO GRATUITO <ArrowUpRight size={14} />
             </a>
 
             <button 

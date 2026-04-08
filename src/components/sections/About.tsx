@@ -10,10 +10,10 @@ export default function About() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.2em] mb-8 block">FILOSOFIA DE ENGENHARIA</span>
+          <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.2em] mb-8 block">SOBRE A MINHA ENTREGA</span>
           <h2 className="text-4xl md:text-7xl font-black leading-[0.8] tracking-tighter mb-8">
-            EFICIÊNCIA <br />
-            <span className="text-zinc-800">COMO PADRÃO.</span>
+            ENGENHARIA COM <br />
+            <span className="text-zinc-800">PROPÓSITO.</span>
           </h2>
         </motion.div>
 
@@ -26,20 +26,24 @@ export default function About() {
         >
           <div className="space-y-6 max-w-xl">
             <p className="text-lg md:text-xl text-zinc-400 leading-relaxed">
-              Minha abordagem combina <span className="text-white">rigor técnico</span> com uma visão estratégica de produto. Acredito que a automação não deve apenas substituir tarefas, mas sim <span className="text-white">amplificar o potencial humano</span>.
+              Com mais de 5 anos de experiência no desenvolvimento de sistemas críticos, especializei-me em <span className="text-white">automação de processos administrativos e financeiros</span>.
             </p>
             <p className="text-zinc-500 leading-relaxed">
-              Especializado em arquiteturas modernas e fluxos de dados otimizados, entrego soluções que reduzem a fricção operacional e maximizam o ROI tecnológico.
+              Minha abordagem une o rigor da engenharia de software com uma visão estratégica de negócio. Não entrego apenas código; entrego <span className="text-white">tempo e previsibilidade</span> para donos de empresa. Já ajudei operações a reduzirem custos operacionais em mais de 60% através de soluções digitais sob medida.
             </p>
             
-            <div className="pt-8 grid grid-cols-2 gap-8 border-t border-zinc-900">
+            <div className="pt-8 grid grid-cols-3 gap-8 border-t border-zinc-900">
               <div>
-                <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest block mb-2">Foco Principal</span>
-                <span className="text-sm text-zinc-300">Automação de Processos</span>
+                <span className="text-2xl font-bold text-white tracking-tighter block mb-1">5+</span>
+                <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">Anos Exp.</span>
               </div>
               <div>
-                <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest block mb-2">Metodologia</span>
-                <span className="text-sm text-zinc-300">Data-Driven Design</span>
+                <span className="text-2xl font-bold text-white tracking-tighter block mb-1">50+</span>
+                <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">Proc. Aut.</span>
+              </div>
+              <div>
+                <span className="text-2xl font-bold text-white tracking-tighter block mb-1">100%</span>
+                <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">Foco ROI</span>
               </div>
             </div>
           </div>

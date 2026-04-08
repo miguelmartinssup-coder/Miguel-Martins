@@ -2,15 +2,15 @@ import { Project } from '../types';
 
 export const PROJECTS: Project[] = [
   {
-    id: "quote-v2",
+    id: "sistema-martins",
     title: "Sistema Martins",
-    category: "Sistema Administrativo",
-    tags: ["Database", "Automação Avançada", "API"],
-    description: "Engenharia de dados e automação para otimização de cotações corporativas de alta performance.",
+    category: "Eficiência Operacional",
+    tags: ["React", "Supabase", "Node.js"],
+    description: "Plataforma centralizada de gestão que eliminou o caos administrativo em uma operação de alta escala.",
     caseStudy: {
-      problem: "Processos manuais de cotação geravam gargalos operacionais e falta de visibilidade analítica.",
-      solution: "Arquitetura orientada a dados com Supabase e dashboard em tempo real para gestão centralizada.",
-      result: "Redução de 65% no tempo de resposta e 100% de integridade dos dados históricos."
+      problem: "A empresa perdia 15 horas semanais em processos manuais de cotação, resultando em erros de precificação e perda de oportunidades de negócio.",
+      solution: "Desenvolvimento de um ecossistema de dados em tempo real com automação de cálculos e integração direta com fornecedores.",
+      result: "Redução de 65% no tempo de resposta operacional e eliminação total de erros humanos em cotações críticas."
     },
     image: "https://i.ibb.co/LhrqKbJP/image.png",
     imagePosition: "center 10%",
@@ -19,29 +19,29 @@ export const PROJECTS: Project[] = [
     link: "https://martins-server-rs.vercel.app",
     metrics: {
       impact: "65% mais rápido",
-      users: "Uso diário",
+      users: "Uso corporativo",
       tech: ["React", "Supabase", "Automation"],
     }
   },
   {
-    id: "quote-v1",
+    id: "sf-orcamentos",
     title: "SF Orçamentos",
     category: "Automação Financeira",
-    tags: ["MVP", "Automação", "Cotações", "Processos"],
-    description: "MVP estratégico para validação de automação de processos financeiros e eliminação de retrabalho.",
+    tags: ["React", "Firebase", "Cloud Functions"],
+    description: "Sistema de orçamentação inteligente focado em precisão e velocidade para o setor financeiro.",
     caseStudy: {
-      problem: "Alto volume de retrabalho e erros humanos em planilhas de cotação descentralizadas.",
-      solution: "Desenvolvimento de um sistema centralizado em React com persistência de dados via Firebase.",
-      result: "Validação técnica do modelo de automação e base para a escalabilidade da versão v2."
+      problem: "Falta de padronização nos orçamentos gerava inconsistência financeira e dificuldade na aprovação de novos contratos.",
+      solution: "Implementação de um motor de regras financeiras automatizado com geração instantânea de documentos e rastreabilidade total.",
+      result: "Aumento de 40% na taxa de conversão de orçamentos devido à velocidade de entrega e clareza dos dados apresentados."
     },
     image: "https://i.ibb.co/zhndhs81/image.png",
     imagePosition: "center 5%",
     year: "2023",
-    status: "Legado (substituído pela v2)",
+    status: "Legado (v1)",
     link: "https://quote-evolution-pro.lovable.app",
     metrics: {
-      impact: "MVP em produção",
-      users: "Projeto piloto",
+      impact: "40% mais conversão",
+      users: "Time financeiro",
       tech: ["React", "Firebase", "Lovable"],
     }
   },
