@@ -1,15 +1,13 @@
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap, ScrollTrigger } from '../../lib/gsap';
 import { METRICS } from '../../config/skills';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Metrics() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const metrics = gsap.utils.toArray<HTMLElement>('.metric-item');
+    const triggers: ScrollTrigger[] = [];
     
     metrics.forEach((metric) => {
       const value = metric.querySelector('.metric-value');
@@ -21,7 +19,7 @@ export default function Metrics() {
       const hasPlus = targetValue.includes('+');
       const numericValue = parseInt(targetValue.replace(/[^\d]/g, '')) || 0;
 
-      gsap.to(value, {
+      const anim = gsap.to(value, {
         innerText: numericValue,
         duration: 2,
         ease: 'power3.out',
@@ -44,7 +42,12 @@ export default function Metrics() {
           }
         }
       });
+      if (anim.scrollTrigger) triggers.push(anim.scrollTrigger);
     });
+
+    return () => {
+      triggers.forEach(t => t.kill());
+    };
   }, []);
 
   return (

@@ -1,18 +1,26 @@
 import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
+import { gsap } from '../../lib/gsap';
 
 interface MagneticButtonProps {
   children: React.ReactNode;
   className?: string;
-  onClick?: () => void;
-  'aria-label'?: string;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onMouseEnter?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onMouseLeave?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  "aria-label"?: string;
 }
 
 export default function MagneticButton({ 
   children, 
   className = "", 
   onClick,
-  'aria-label': ariaLabel 
+  onMouseEnter,
+  onMouseLeave,
+  type = "button",
+  disabled = false,
+  "aria-label": ariaLabel,
 }: MagneticButtonProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -36,7 +44,7 @@ export default function MagneticButton({
       });
     };
 
-    const handleMouseLeave = () => {
+    const handleMouseLeaveInternal = () => {
       gsap.to(button, {
         x: 0,
         y: 0,
@@ -46,18 +54,22 @@ export default function MagneticButton({
     };
 
     button.addEventListener('mousemove', handleMouseMove);
-    button.addEventListener('mouseleave', handleMouseLeave);
+    button.addEventListener('mouseleave', handleMouseLeaveInternal);
 
     return () => {
       button.removeEventListener('mousemove', handleMouseMove);
-      button.removeEventListener('mouseleave', handleMouseLeave);
+      button.removeEventListener('mouseleave', handleMouseLeaveInternal);
     };
   }, []);
 
   return (
     <button
       ref={buttonRef}
+      type={type}
+      disabled={disabled}
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       aria-label={ariaLabel}
       className={`px-8 py-4 rounded-full border border-white/20 hover:border-white transition-colors duration-300 text-lg font-medium focus-visible:outline-2 focus-visible:outline-white focus-visible:outline-offset-4 ${className}`}
     >

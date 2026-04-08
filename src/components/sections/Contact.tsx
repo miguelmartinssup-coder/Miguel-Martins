@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import MagneticButton from '../ui/MagneticButton';
 import { CONTACT } from '../../config/contact';
 import { Send, CheckCircle2, AlertCircle, Mail, MessageCircle, Linkedin } from 'lucide-react';
+import { cn } from '../../lib/utils';
 
 export default function Contact() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -12,14 +13,16 @@ export default function Contact() {
     e.preventDefault();
     setStatus('loading');
     
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${CONTACT.email}&su=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Olá Miguel,\n\nMeu nome é ${formData.name}.\n\n${formData.message}`)}`;
-    
-    window.open(gmailUrl, '_blank');
-    
-    setTimeout(() => {
+    try {
+      const body = `Olá Miguel,\n\nMeu nome é ${formData.name}.\nE-mail para resposta: ${formData.email}\n\n${formData.message}`;
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${CONTACT.email}&su=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(body)}`;
+      window.open(gmailUrl, '_blank');
       setStatus('success');
+    } catch {
+      setStatus('error');
+    } finally {
       setTimeout(() => setStatus('idle'), 3000);
-    }, 1000);
+    }
   };
 
   const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${CONTACT.email}`;
@@ -124,11 +127,13 @@ export default function Contact() {
           </div>
 
           <MagneticButton 
-            className={`w-full md:w-fit px-16 py-6 text-xl flex items-center justify-center gap-4 transition-all ${
+            type="submit"
+            className={cn(
+              "w-full md:w-fit px-16 py-6 text-xl flex items-center justify-center gap-4 transition-all",
               status === 'success' ? 'bg-green-500 text-white border-none' : 
               status === 'error' ? 'bg-red-500 text-white border-none' : 
               'bg-white text-black border-none'
-            }`}
+            )}
             aria-label="Enviar formulário de contato"
           >
             {status === 'idle' && <>ENVIAR MENSAGEM <Send size={20} /></>}

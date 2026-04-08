@@ -1,10 +1,11 @@
 export const SKILLS = {
   "FERRAMENTAS FINANCEIRAS": ["Excel", "Power BI", "Margem", "ROI", "Payback"],
   "AUTOMAÇÃO E DADOS": [
-    "HTML (criação de sistema interno)",
-    "No-code / Low-code (Lovable, Make, Zapier)",
-    "Banco de dados simples (Supabase / Firebase)",
-    "Integrações (API básica)"
+    "HTML/CSS",
+    "No-code / Low-code",
+    "Lovable · Make · Zapier",
+    "Supabase / Firebase",
+    "API REST (básico)",
   ],
   "GESTÃO DE PROCESSOS": [
     "Mapeamento de processos (BPMN simples)",
@@ -23,7 +24,7 @@ export const SKILLS = {
 
 export const METRICS = [
   { value: "90%", label: "Redução média de tempo em processos" },
-  { value: "5", label: "Sistemas proprietários desenvolvidos" },
-  { value: "2 Anos", label: "De experiência em automação financeira" },
-  { value: "R$ 1.800+", label: "De custo extra em ferramentas legadas" },
+  { value: "5+", label: "Sistemas proprietários desenvolvidos" },
+  { value: "3 Anos", label: "De experiência em automação financeira" },
+  { value: "2024", label: "Quote Evolution Pro em produção" },
 ];

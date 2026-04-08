@@ -4,6 +4,8 @@ import MagneticButton from '../ui/MagneticButton';
 import { CONTACT } from '../../config/contact';
 import { useActiveSection } from '../../hooks/useActiveSection';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { useCursor } from '../../context/CursorContext';
+import { cn } from '../../lib/utils';
 
 const NAV_LINKS = [
   { id: 'work', label: 'PROJETOS' },
@@ -12,16 +14,26 @@ const NAV_LINKS = [
   { id: 'contact', label: 'CONTATO' },
 ];
 
+const SECTION_IDS = NAV_LINKS.map(l => l.id);
+
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const activeSection = useActiveSection(NAV_LINKS.map(l => l.id));
+  const { setVariant } = useCursor();
+  const activeSection = useActiveSection(SECTION_IDS);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
     <>
       <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 md:px-24 py-6 md:py-10 mix-blend-difference">
-        <a href="/" className="text-xl font-black tracking-tighter">MIGUEL MARTINS</a>
+        <a 
+          href="/" 
+          className="text-xl font-black tracking-tighter"
+          onMouseEnter={() => setVariant('link')}
+          onMouseLeave={() => setVariant('default')}
+        >
+          MIGUEL MARTINS
+        </a>
         
         {/* Desktop Nav */}
         <div className="hidden md:flex gap-16 text-[10px] font-bold tracking-[0.3em] uppercase">
@@ -29,7 +41,12 @@ export default function Navigation() {
             <a 
               key={link.id}
               href={`#${link.id}`} 
-              className={`transition-opacity hover:opacity-100 relative ${activeSection === link.id ? 'opacity-100' : 'opacity-40'}`}
+              onMouseEnter={() => setVariant('link')}
+              onMouseLeave={() => setVariant('default')}
+              className={cn(
+                "transition-opacity hover:opacity-100 relative",
+                activeSection === link.id ? "opacity-100" : "opacity-40"
+              )}
             >
               {link.label}
               {activeSection === link.id && (
@@ -45,6 +62,8 @@ export default function Navigation() {
         <div className="flex items-center gap-4">
           <MagneticButton 
             onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+            onMouseEnter={() => setVariant('button')}
+            onMouseLeave={() => setVariant('default')}
             className="hidden md:flex items-center gap-2 scale-90 bg-white text-black border-none"
           >
             CONTATO <ArrowUpRight size={16} />
@@ -53,6 +72,8 @@ export default function Navigation() {
           {/* Mobile Toggle */}
           <button 
             onClick={toggleMenu}
+            onMouseEnter={() => setVariant('link')}
+            onMouseLeave={() => setVariant('default')}
             className="md:hidden p-2 text-white"
             aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
           >

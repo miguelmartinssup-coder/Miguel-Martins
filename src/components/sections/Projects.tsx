@@ -1,19 +1,19 @@
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap, ScrollTrigger } from '../../lib/gsap';
 import { PROJECTS } from '../../config/projects';
 import { ArrowUpRight } from 'lucide-react';
-
-gsap.registerPlugin(ScrollTrigger);
+import { useCursor } from '../../context/CursorContext';
 
 export default function Projects() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const { setVariant } = useCursor();
 
   useEffect(() => {
     const cards = gsap.utils.toArray<HTMLElement>('.project-card');
+    const triggers: ScrollTrigger[] = [];
 
     cards.forEach((card) => {
-      gsap.fromTo(
+      const anim = gsap.fromTo(
         card,
         { opacity: 0, scale: 0.9, y: 100 },
         {
@@ -30,7 +30,12 @@ export default function Projects() {
           },
         }
       );
+      if (anim.scrollTrigger) triggers.push(anim.scrollTrigger);
     });
+
+    return () => {
+      triggers.forEach(t => t.kill());
+    };
   }, []);
 
   return (
@@ -45,12 +50,19 @@ export default function Projects() {
             SOLUÇÕES DE IMPACTO
           </h2>
         </div>
-        <div className="text-zinc-500 font-mono text-xl hidden md:block">01 — 02</div>
+        <div className="text-zinc-500 font-mono text-xl hidden md:block">
+          01 — {String(PROJECTS.length).padStart(2, '0')}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-24 md:gap-48">
         {PROJECTS.map((project, index) => (
-          <div key={project.id} className="project-card group cursor-pointer">
+          <div 
+            key={project.id} 
+            className="project-card group cursor-pointer"
+            onMouseEnter={() => setVariant('project')}
+            onMouseLeave={() => setVariant('default')}
+          >
             <a href={project.link} target="_blank" rel="noopener noreferrer">
               <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-zinc-900">
                 <picture>
@@ -58,6 +70,8 @@ export default function Projects() {
                   <img
                     src={project.image}
                     alt={`Screenshot do sistema ${project.title} — ${project.description}`}
+                    width={1200}
+                    height={514}
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 grayscale group-hover:grayscale-0 opacity-50 group-hover:opacity-100"
                     referrerPolicy="no-referrer"
                     loading="lazy"

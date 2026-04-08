@@ -67,14 +67,21 @@ export default function ThreeBackground() {
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    const animate = () => {
+    let lastTime = 0;
+    const TARGET_FPS = 30;
+    const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
+    const animate = (currentTime: number) => {
       animId = requestAnimationFrame(animate);
+      
+      if (currentTime - lastTime < FRAME_INTERVAL) return;
+      lastTime = currentTime;
 
-      targetX = mouseX * 2;
-      targetY = mouseY * 2;
+      baseRotY = (baseRotY + 0.002) % (Math.PI * 2);
+      baseRotX = (baseRotX + 0.001) % (Math.PI * 2);
 
-      baseRotY += 0.002;
-      baseRotX += 0.001;
+      targetX += (mouseX * 0.8 - targetX) * 0.05;
+      targetY += (mouseY * 0.8 - targetY) * 0.05;
 
       particles.rotation.y = baseRotY + targetX;
       particles.rotation.x = baseRotX + targetY;
@@ -82,13 +89,13 @@ export default function ThreeBackground() {
       renderer.render(scene, camera);
     };
 
-    animate();
+    requestAnimationFrame(animate);
 
     const handleVisibilityChange = () => {
       if (document.hidden) {
         cancelAnimationFrame(animId);
       } else {
-        animId = requestAnimationFrame(animate);
+        requestAnimationFrame(animate);
       }
     };
 

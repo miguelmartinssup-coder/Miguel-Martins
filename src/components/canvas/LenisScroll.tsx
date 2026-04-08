@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap, ScrollTrigger } from '../../lib/gsap';
 
 export default function LenisScroll() {
   useEffect(() => {
@@ -10,19 +10,22 @@ export default function LenisScroll() {
       smoothWheel: true,
     });
 
-    lenis.on('scroll', ScrollTrigger.update);
+    // Integração correta: lenis alimenta o ticker do GSAP
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
 
-    let rafId: number;
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
+    // Desabilita o lag smoothing do GSAP (o Lenis já cuida disso)
+    gsap.ticker.lagSmoothing(0);
 
-    rafId = requestAnimationFrame(raf);
+    // Refresh ScrollTrigger after fonts are ready
+    document.fonts.ready.then(() => {
+      ScrollTrigger.refresh();
+    });
 
     return () => {
-      cancelAnimationFrame(rafId);
       lenis.destroy();
+      gsap.ticker.remove((time) => lenis.raf(time * 1000));
     };
   }, []);
 
