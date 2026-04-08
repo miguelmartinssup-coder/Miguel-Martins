@@ -1,69 +1,49 @@
 import { motion } from 'motion/react';
 
-const TIMELINE = [
-  { year: '2022', title: 'Primeiro Sistema', description: 'Desenvolvimento da primeira automação para gestão de dados.' },
-  { year: '2023', title: 'Quote Evolution v1', description: 'Lançamento do MVP de automação de cotações.' },
-  { year: '2024', title: 'Quote Evolution v2', description: 'Evolução para plataforma completa com Supabase.' },
-  { year: 'HOJE', title: 'Foco em IA', description: 'Integração de LLMs para análise preditiva financeira.' },
-];
-
 export default function About() {
   return (
-    <section id="about" className="py-24 md:py-64 px-6 md:px-24 border-t border-white/5">
-      <div className="max-w-7xl mx-auto">
-        <div className="w-32 h-32 rounded-full overflow-hidden mb-12 border border-white/10 grayscale hover:grayscale-0 transition-all duration-700">
-          <img 
-            src="https://picsum.photos/seed/miguel/200/200" 
-            alt="Miguel Martins" 
-            width={128} 
-            height={128}
-            className="w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-          />
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32">
-          <div className="max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mb-8 block">FILOSOFIA DE TRABALHO</span>
-              <h2 
-                style={{ fontSize: 'var(--text-section)' }}
-                className="font-black mb-10 leading-[0.85] tracking-tighter"
-              >
-                EFICIÊNCIA <br />
-                <span className="text-zinc-700">COMO PADRÃO.</span>
-              </h2>
-              <p className="text-sm sm:text-base md:text-lg text-zinc-400 font-light leading-relaxed tracking-tight max-w-2xl">
-                Transformo processos complexos em fluxos de trabalho simplificados e automatizados, 
-                garantindo que a tecnologia trabalhe para o seu negócio, e não o contrário.
-              </p>
-            </motion.div>
-          </div>
+    <section id="about" className="py-24 md:py-48 px-6 border-t border-zinc-900">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.2em] mb-8 block">FILOSOFIA DE ENGENHARIA</span>
+          <h2 className="text-4xl md:text-7xl font-black leading-[0.8] tracking-tighter mb-8">
+            EFICIÊNCIA <br />
+            <span className="text-zinc-800">COMO PADRÃO.</span>
+          </h2>
+        </motion.div>
 
-          <div className="relative">
-            <div className="absolute left-0 top-0 w-px h-full bg-white/5" />
-            <div className="flex flex-col gap-16">
-              {TIMELINE.map((item, index) => (
-                <motion.div 
-                  key={item.year}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="relative pl-12 group"
-                >
-                  <div className="absolute left-[-4px] top-2 w-2 h-2 rounded-full bg-zinc-800 group-hover:bg-white transition-colors duration-500" />
-                  <span className="text-[10px] font-mono text-zinc-600 mb-2 block tracking-widest">{item.year}</span>
-                  <h3 className="text-xl font-bold mb-2 tracking-tight">{item.title}</h3>
-                  <p className="text-sm text-zinc-500 font-light leading-relaxed max-w-sm">{item.description}</p>
-                </motion.div>
-              ))}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex flex-col justify-end"
+        >
+          <div className="space-y-6 max-w-xl">
+            <p className="text-lg md:text-xl text-zinc-400 leading-relaxed">
+              Minha abordagem combina <span className="text-white">rigor técnico</span> com uma visão estratégica de produto. Acredito que a automação não deve apenas substituir tarefas, mas sim <span className="text-white">amplificar o potencial humano</span>.
+            </p>
+            <p className="text-zinc-500 leading-relaxed">
+              Especializado em arquiteturas modernas e fluxos de dados otimizados, entrego soluções que reduzem a fricção operacional e maximizam o ROI tecnológico.
+            </p>
+            
+            <div className="pt-8 grid grid-cols-2 gap-8 border-t border-zinc-900">
+              <div>
+                <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest block mb-2">Foco Principal</span>
+                <span className="text-sm text-zinc-300">Automação de Processos</span>
+              </div>
+              <div>
+                <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest block mb-2">Metodologia</span>
+                <span className="text-sm text-zinc-300">Data-Driven Design</span>
+              </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

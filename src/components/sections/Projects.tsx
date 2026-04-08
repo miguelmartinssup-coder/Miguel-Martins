@@ -1,117 +1,151 @@
-import { useEffect, useRef } from 'react';
-import { gsap, ScrollTrigger } from '../../lib/gsap';
+import { motion } from 'motion/react';
 import { PROJECTS } from '../../config/projects';
-import { ArrowUpRight } from 'lucide-react';
-import { useCursor } from '../../context/CursorContext';
+import { ArrowUpRight, CheckCircle2, Target, Zap } from 'lucide-react';
+import SpotlightCard from '../ui/SpotlightCard';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }
+  }
+};
 
 export default function Projects() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const { setVariant } = useCursor();
-
-  useEffect(() => {
-    const cards = gsap.utils.toArray<HTMLElement>('.project-card');
-    const triggers: ScrollTrigger[] = [];
-
-    cards.forEach((card) => {
-      const anim = gsap.fromTo(
-        card,
-        { opacity: 0, scale: 0.9, y: 100 },
-        {
-          opacity: 1,
-          scale: 1,
-          y: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top bottom-=50',
-            end: 'top center',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-      if (anim.scrollTrigger) triggers.push(anim.scrollTrigger);
-    });
-
-    return () => {
-      triggers.forEach(t => t.kill());
-    };
-  }, []);
-
   return (
-    <section id="work" ref={sectionRef} className="py-24 md:py-48 px-6 md:px-24">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 md:mb-32 gap-8">
-        <div>
-          <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-widest mb-4 block">PROJETOS EM DESTAQUE</span>
-          <h2 
-            style={{ fontSize: 'var(--text-projects)' }}
-            className="font-black tracking-tighter leading-none"
-          >
-            SOLUÇÕES DE IMPACTO
-          </h2>
+    <section id="work" className="py-24 md:py-40 px-6 max-w-7xl mx-auto">
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={containerVariants}
+        className="space-y-20"
+      >
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
+          <motion.div variants={itemVariants} className="max-w-2xl">
+            <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.2em] mb-4 block">PORTFÓLIO DE ENGENHARIA</span>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-6">
+              SOLUÇÕES DE ALTO IMPACTO
+            </h2>
+            <p className="text-lg text-zinc-400">
+              Transformando desafios operacionais complexos em sistemas escaláveis e eficientes.
+            </p>
+          </motion.div>
+          <motion.div variants={itemVariants} className="text-zinc-500 font-mono text-sm">
+            [ 01 — 02 ]
+          </motion.div>
         </div>
-        <div className="text-zinc-500 font-mono text-xl hidden md:block">
-          01 — {String(PROJECTS.length).padStart(2, '0')}
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 gap-24 md:gap-48">
-        {PROJECTS.map((project, index) => (
-          <div 
-            key={project.id} 
-            className="project-card group cursor-pointer"
-            onMouseEnter={() => setVariant('project')}
-            onMouseLeave={() => setVariant('default')}
-          >
-            <a href={project.link} target="_blank" rel="noopener noreferrer">
-              <div className="relative aspect-[4/3] sm:aspect-[16/9] md:aspect-[21/9] overflow-hidden bg-zinc-900">
-                <picture>
-                  <source srcSet={project.image} type="image/webp" />
-                  <img
-                    src={project.image}
-                    alt={`Screenshot do sistema ${project.title} — ${project.description}`}
-                    width={1200}
-                    height={514}
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 grayscale group-hover:grayscale-0 opacity-50 group-hover:opacity-100"
-                    referrerPolicy="no-referrer"
-                    loading="lazy"
-                  />
-                </picture>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] to-transparent opacity-80" />
-                
-                <div className="absolute bottom-6 left-6 right-6 md:bottom-12 md:left-12 md:right-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
-                  <div className="max-w-full md:max-w-xl">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest">{project.category}</span>
-                      <span className="w-1 h-1 bg-zinc-700 rounded-full" />
-                      <span className="text-[10px] font-mono text-green-400 uppercase tracking-widest flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-                        {project.status}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+          {PROJECTS.map((project, index) => (
+            <motion.div 
+              key={project.id} 
+              variants={itemVariants}
+              className={`${index === 0 ? 'md:col-span-8' : 'md:col-span-4'} group`}
+            >
+              <SpotlightCard className="h-full">
+                <div className="p-8 md:p-10 flex flex-col h-full">
+                  <div className="flex justify-between items-start mb-8">
+                    <div>
+                      <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest block mb-2">{project.category}</span>
+                      <h3 className="text-2xl md:text-3xl font-bold tracking-tighter">{project.title}</h3>
+                    </div>
+                    <a 
+                      href={project.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full border border-zinc-800 flex items-center justify-center hover:bg-white hover:text-black transition-all duration-300"
+                    >
+                      <ArrowUpRight size={18} />
+                    </a>
+                  </div>
+
+                  <div className="relative mb-8 group/img">
+                    {/* Browser Mockup Header */}
+                    <div className="bg-zinc-900/80 backdrop-blur-md border-t border-x border-zinc-800 rounded-t-xl px-4 py-3 flex items-center gap-2">
+                      <div className="flex gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                      </div>
+                      <div className="mx-auto bg-zinc-950/50 rounded-md px-3 py-1 border border-zinc-800/50">
+                        <div className="w-32 h-1.5 bg-zinc-800/50 rounded-full" />
+                      </div>
+                    </div>
+                    
+                    {/* Image Container */}
+                    <div className="relative aspect-[16/10] overflow-hidden rounded-b-xl border border-zinc-800 bg-zinc-950">
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        style={{ 
+                          objectPosition: project.imagePosition || 'center',
+                          imageRendering: '-webkit-optimize-contrast'
+                        }}
+                        className="w-full h-full object-cover transition-all duration-500 group-hover/img:brightness-110 contrast-[1.05] saturate-[1.05] brightness-[1.02]"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/20 via-transparent to-transparent" />
+                      
+                      {/* Glass Overlay on Hover */}
+                      <div className="absolute inset-0 opacity-0 group-hover/img:opacity-100 transition-opacity duration-500 bg-white/[0.02] pointer-events-none" />
+                    </div>
+                  </div>
+
+                  <div className="space-y-6 flex-grow">
+                    <p className="text-zinc-400 text-sm leading-relaxed">
+                      {project.description}
+                    </p>
+
+                    <div className="grid grid-cols-1 gap-4 pt-4 border-t border-zinc-800/50">
+                      <div className="flex items-start gap-3">
+                        <Target className="w-4 h-4 text-zinc-500 mt-1 shrink-0" />
+                        <div>
+                          <span className="text-[10px] font-mono text-zinc-500 uppercase block">Problema</span>
+                          <p className="text-xs text-zinc-300">{project.caseStudy.problem}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <Zap className="w-4 h-4 text-zinc-500 mt-1 shrink-0" />
+                        <div>
+                          <span className="text-[10px] font-mono text-zinc-500 uppercase block">Solução</span>
+                          <p className="text-xs text-zinc-300">{project.caseStudy.solution}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle2 className="w-4 h-4 text-green-500/70 mt-1 shrink-0" />
+                        <div>
+                          <span className="text-[10px] font-mono text-zinc-500 uppercase block">Impacto</span>
+                          <p className="text-xs text-green-400/90 font-medium">{project.caseStudy.result}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mt-8">
+                    {project.tags.map(tag => (
+                      <span key={tag} className="text-[9px] font-mono bg-zinc-800/30 border border-zinc-800/50 px-2 py-1 rounded text-zinc-400 uppercase tracking-wider">
+                        {tag}
                       </span>
-                    </div>
-                    <h3 className="text-2xl sm:text-4xl md:text-6xl font-bold mb-2 md:mb-4 tracking-tighter">{project.title}</h3>
-                    <p className="text-white/60 text-sm md:text-lg font-light line-clamp-2 md:line-clamp-none">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mt-4">
-                      {project.tags.map(tag => (
-                        <span key={tag} className="text-[9px] font-mono border border-white/10 px-2 py-1 rounded-sm text-zinc-500 uppercase">{tag}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="hidden md:block">
-                    <div className="w-16 h-16 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-500">
-                      <ArrowUpRight size={24} />
-                    </div>
+                    ))}
                   </div>
                 </div>
-                
-                <div className="absolute top-12 right-12 text-6xl font-black text-white/5 font-mono group-hover:text-white/10 transition-colors">
-                  0{index + 1}
-                </div>
-              </div>
-            </a>
-          </div>
-        ))}
-      </div>
+              </SpotlightCard>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     </section>
   );
 }

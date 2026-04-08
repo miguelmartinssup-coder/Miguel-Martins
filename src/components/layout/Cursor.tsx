@@ -15,34 +15,36 @@ export default function Cursor() {
       backgroundColor: 'transparent',
     },
     link: {
-      scale: 1.5,
-      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      scale: 1.2,
+      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      borderColor: 'rgba(255, 255, 255, 0.5)',
     },
     project: {
-      scale: 3,
-      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+      scale: 2.5,
+      backgroundColor: 'rgba(255, 255, 255, 0.05)',
+      borderColor: 'rgba(255, 255, 255, 0.5)',
     },
     button: {
-      scale: 0,
-      opacity: 0,
+      scale: 0.5,
+      opacity: 0.5,
     }
   };
 
   return (
     <>
       <motion.div
-        className="fixed top-0 left-0 w-1 h-1 bg-white rounded-full pointer-events-none z-[9999] mix-blend-difference"
+        className="fixed top-0 left-0 w-1 h-1 bg-white rounded-full pointer-events-none z-[9999]"
         animate={{ x: x - 2, y: y - 2 }}
-        transition={{ type: 'spring', damping: 30, stiffness: 200, mass: 0.5 }}
+        transition={{ type: 'spring', damping: 30, stiffness: 250, mass: 0.5 }}
       />
       <motion.div
-        className="fixed top-0 left-0 w-10 h-10 border border-white/30 rounded-full pointer-events-none z-[9998] mix-blend-difference flex items-center justify-center overflow-hidden"
+        className="fixed top-0 left-0 w-8 h-8 border border-white/20 rounded-full pointer-events-none z-[9998] flex items-center justify-center overflow-hidden"
         animate={{ 
-          x: x - 20, 
-          y: y - 20,
+          x: x - 16, 
+          y: y - 16,
           ...variants[variant]
         }}
-        transition={{ type: 'spring', damping: 20, stiffness: 100, mass: 0.8 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 150, mass: 0.8 }}
       >
         <AnimatePresence>
           {variant === 'project' && (

@@ -1,72 +1,50 @@
-import { useEffect, useRef } from 'react';
-import { gsap, ScrollTrigger } from '../../lib/gsap';
+import { motion } from 'motion/react';
 import { METRICS } from '../../config/skills';
 
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: "easeOut" }
+  }
+};
+
 export default function Metrics() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const metrics = gsap.utils.toArray<HTMLElement>('.metric-item');
-    const triggers: ScrollTrigger[] = [];
-    
-    metrics.forEach((metric) => {
-      const value = metric.querySelector('.metric-value');
-      if (!value) return;
-
-      const targetValue = value.getAttribute('data-value') || '0';
-      const isPercentage = targetValue.includes('%');
-      const isCurrency = targetValue.includes('R$');
-      const hasPlus = targetValue.includes('+');
-      const numericValue = parseInt(targetValue.replace(/[^\d]/g, '')) || 0;
-
-      const anim = gsap.to(value, {
-        innerText: numericValue,
-        duration: 2,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: metric,
-          start: 'top bottom-=50',
-        },
-        onUpdate: function() {
-          const current = Math.floor(Number(this.targets()[0].innerText));
-          let formatted = current.toLocaleString('pt-BR');
-          
-          if (isPercentage) {
-            value.innerHTML = `${formatted}%`;
-          } else if (targetValue.toLowerCase().includes('anos')) {
-            value.innerHTML = `${formatted} Anos`;
-          } else if (isCurrency) {
-            value.innerHTML = `R$ ${formatted}${hasPlus ? '+' : ''}`;
-          } else {
-            value.innerHTML = `${formatted}${hasPlus ? '+' : ''}`;
-          }
-        }
-      });
-      if (anim.scrollTrigger) triggers.push(anim.scrollTrigger);
-    });
-
-    return () => {
-      triggers.forEach(t => t.kill());
-    };
-  }, []);
-
   return (
-    <section ref={containerRef} className="border-y border-white/5">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5">
+    <section className="border-y border-zinc-900 bg-zinc-950">
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 divide-x divide-zinc-900"
+      >
         {METRICS.map((metric) => (
-          <div key={metric.label} className="metric-item bg-[#050505] p-8 md:p-12 flex flex-col gap-3">
-            <span 
-              className="metric-value text-4xl md:text-6xl font-black tracking-tighter"
-              data-value={metric.value}
-            >
-              0
+          <motion.div 
+            key={metric.label} 
+            variants={itemVariants}
+            className="p-8 md:p-16 flex flex-col gap-4 group hover:bg-zinc-900/30 transition-colors duration-500"
+          >
+            <span className="text-4xl md:text-7xl font-black tracking-tighter text-white group-hover:text-zinc-200 transition-colors">
+              {metric.value}
             </span>
-            <span className="text-[10px] md:text-xs font-mono text-zinc-500 uppercase tracking-widest leading-relaxed">
+            <span className="text-[10px] md:text-xs font-mono text-zinc-500 uppercase tracking-[0.2em] leading-relaxed max-w-[120px]">
               {metric.label}
             </span>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

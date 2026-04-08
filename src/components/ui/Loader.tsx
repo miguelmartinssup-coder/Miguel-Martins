@@ -49,19 +49,19 @@ export default function Loader({ onComplete }: LoaderProps) {
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ y: '-100%', transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
-      className="fixed inset-0 z-[100] bg-[#050505] flex flex-col items-center justify-center"
+      className="fixed inset-0 z-[100] bg-zinc-950 flex flex-col items-center justify-center"
       role="status"
       aria-live="polite"
       aria-label={`Carregando: ${progress}%`}
     >
       <div className="relative overflow-hidden h-20 w-full flex justify-center">
         <motion.span
-          className="text-6xl md:text-8xl font-black tracking-tighter"
+          className="text-6xl md:text-8xl font-black tracking-tighter text-white"
         >
           {progress}%
         </motion.span>
       </div>
-      <div className="h-[1px] bg-white/20 w-48 mt-4 relative overflow-hidden">
+      <div className="h-[1px] bg-zinc-800 w-48 mt-4 relative overflow-hidden">
         <motion.div 
           animate={{ width: `${progress}%` }}
           className="absolute inset-0 bg-white"

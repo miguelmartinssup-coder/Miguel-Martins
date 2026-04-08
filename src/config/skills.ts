@@ -1,30 +1,30 @@
 export const SKILLS = {
-  "FERRAMENTAS FINANCEIRAS": ["Excel", "Power BI", "Margem", "ROI", "Payback"],
-  "AUTOMAÇÃO E DADOS": [
-    "HTML/CSS",
-    "No-code / Low-code",
-    "Lovable · Make · Zapier",
-    "Supabase / Firebase",
-    "API REST (básico)",
+  "ENGENHARIA DE DADOS & IA": [
+    "Arquitetura de Dados",
+    "Automação de Workflows",
+    "Integração de LLMs (Gemini/OpenAI)",
+    "Supabase / Firebase Infrastructure",
+    "API Design & Orchestration"
   ],
-  "GESTÃO DE PROCESSOS": [
-    "Mapeamento de processos (BPMN simples)",
-    "Padronização (SOPs)",
-    "Indicadores de processo (tempo, erro, custo)",
-    "Notion"
+  "DESENVOLVIMENTO FRONT-END": [
+    "React 19 & Next.js Ecosystem",
+    "GSAP & Framer Motion Animations",
+    "Tailwind CSS v4 Architecture",
+    "TypeScript Engineering",
+    "Performance Optimization"
   ],
-  "TECNOLOGIA": [
-    "AI Studio Google",
-    "Framer",
-    "Lovable",
-    "Vercel",
-    "Supabase"
+  "ESTRATÉGIA FINANCEIRA": [
+    "Análise de ROI & Payback",
+    "Modelagem Financeira Avançada",
+    "Business Intelligence (Power BI)",
+    "Otimização de Custos Operacionais",
+    "Gestão de Processos (BPMN)"
   ],
 };
 
 export const METRICS = [
-  { value: "90%", label: "Redução média de tempo em processos" },
-  { value: "5+", label: "Sistemas proprietários desenvolvidos" },
-  { value: "3 Anos", label: "De experiência em automação financeira" },
-  { value: "2024", label: "Quote Evolution Pro em produção" },
+  { value: "90%", label: "Eficiência operacional em processos críticos" },
+  { value: "5+", label: "Ecossistemas digitais proprietários" },
+  { value: "3 Anos", label: "Liderando automações de alto impacto" },
+  { value: "2024", label: "Foco em Engenharia de Software & IA" },
 ];

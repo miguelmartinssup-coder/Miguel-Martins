@@ -22,7 +22,7 @@ export default function Marquee() {
   }, []);
 
   return (
-    <div className="py-12 md:py-20 border-y border-white/5 overflow-hidden bg-zinc-950/20">
+    <div className="py-12 md:py-24 border-y border-zinc-800/50 overflow-hidden bg-zinc-950">
       <div className="flex whitespace-nowrap">
         <motion.div
           ref={marqueeRef}
@@ -31,18 +31,18 @@ export default function Marquee() {
             x: {
               repeat: Infinity,
               repeatType: "loop",
-              duration: 30,
+              duration: 40,
               ease: "linear",
             },
           }}
-          className="flex gap-12 md:gap-24 items-center"
+          className="flex gap-12 md:gap-32 items-center"
         >
           {[...WORDS, ...WORDS, ...WORDS].map((word, i) => (
-            <div key={i} className="flex items-center gap-12 md:gap-24">
-              <span className="text-4xl md:text-7xl font-black tracking-tighter text-zinc-800 hover:text-white transition-colors duration-500 cursor-default">
+            <div key={i} className="flex items-center gap-12 md:gap-32">
+              <span className="text-4xl md:text-8xl font-black tracking-tighter text-transparent stroke-zinc-900 stroke-1 hover:text-zinc-800 transition-all duration-700 cursor-default uppercase" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.05)' }}>
                 {word}
               </span>
-              <div className="w-2 h-2 md:w-3 md:h-3 bg-zinc-800 rounded-full" />
+              <div className="w-2 h-2 md:w-3 md:h-3 bg-zinc-900 rounded-full opacity-20" />
             </div>
           ))}
         </motion.div>

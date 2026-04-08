@@ -4,8 +4,13 @@ export interface Project {
   category: string;
   tags: string[];
   description: string;
-  longDescription: string;
+  caseStudy: {
+    problem: string;
+    solution: string;
+    result: string;
+  };
   image: string;
+  imagePosition?: string;
   year: string;
   status: string;
   link: string;
