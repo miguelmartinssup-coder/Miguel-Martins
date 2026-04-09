@@ -8,8 +8,7 @@ export default function Footer() {
         <p className="text-zinc-700">{CONTACT.location}</p>
       </div>
       <div className="flex gap-8 md:gap-12">
-        <a href="#" className="hover:text-white transition-colors">PRIVACIDADE</a>
-        <a href="#" className="hover:text-white transition-colors">TERMOS</a>
+        {/* Links removidos temporariamente conforme solicitação de melhoria */}
       </div>
     </footer>
   );

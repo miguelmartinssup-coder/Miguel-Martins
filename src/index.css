@@ -47,7 +47,12 @@
   }
 
   @media (pointer: fine) {
-    * { cursor: none !important; }
+    * { cursor: none; }
+    a, button, [role="button"] { cursor: none; }
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-4 outline-white/50;
   }
 }
 

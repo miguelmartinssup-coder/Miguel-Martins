@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 interface VideoBackgroundProps {
   src: string;
@@ -8,6 +9,7 @@ interface VideoBackgroundProps {
 export default function VideoBackground({ src, poster }: VideoBackgroundProps) {
   const [canPlay, setCanPlay] = useState(false);
   const [isSlow, setIsSlow] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const connection = (navigator as any).connection;
@@ -16,7 +18,7 @@ export default function VideoBackground({ src, poster }: VideoBackgroundProps) {
     }
   }, []);
 
-  if (isSlow) {
+  if (isSlow || prefersReducedMotion) {
     return (
       <div
         className="absolute inset-0 bg-cover bg-center -z-20 opacity-30 grayscale"

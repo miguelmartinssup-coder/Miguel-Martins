@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -11,16 +11,17 @@ const containerVariants = {
   }
 };
 
-const textVariants = {
-  hidden: { y: 100, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { duration: 1 }
-  }
-};
-
 export default function Hero() {
+  const prefersReducedMotion = useReducedMotion();
+
+  const textVariants = {
+    hidden: { y: prefersReducedMotion ? 0 : 100, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: prefersReducedMotion ? 0.5 : 1 }
+    }
+  };
   return (
     <section className="relative min-h-[90svh] flex flex-col justify-center px-6 md:px-24 overflow-hidden pt-20">
       <motion.div 
@@ -101,17 +102,22 @@ export default function Hero() {
       >
         <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest md:[writing-mode:vertical-rl]">SCROLL TO EXPLORE</span>
         <div className="w-[1px] h-16 bg-zinc-800 relative overflow-hidden">
-          <motion.div 
-            animate={{ 
-              y: ["-100%", "100%"],
-            }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
-            className="absolute top-0 left-0 w-full h-full bg-zinc-400"
-          />
+          {!prefersReducedMotion && (
+            <motion.div 
+              animate={{ 
+                y: ["-100%", "100%"],
+              }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity, 
+                ease: "easeInOut" 
+              }}
+              className="absolute top-0 left-0 w-full h-full bg-zinc-400"
+            />
+          )}
+          {prefersReducedMotion && (
+            <div className="absolute top-0 left-0 w-full h-1/2 bg-zinc-400" />
+          )}
         </div>
       </motion.div>
     </section>

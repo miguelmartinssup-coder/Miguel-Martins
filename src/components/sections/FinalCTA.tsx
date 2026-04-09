@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import { CONTACT } from '../../config/contact';
 
 export default function FinalCTA() {
   return (
@@ -32,7 +33,7 @@ export default function FinalCTA() {
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </a>
             <a 
-              href="https://wa.me/5511999999999" 
+              href={CONTACT.whatsapp} 
               target="_blank"
               className="w-full md:w-auto px-12 py-6 bg-transparent border border-zinc-200 text-black font-bold rounded-full hover:bg-zinc-50 transition-all duration-300"
             >
