@@ -1,114 +1,90 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Menu, X } from 'lucide-react';
 import { useActiveSection } from '../../hooks/useActiveSection';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
 
-const NAV_LINKS = [
-  { id: 'work', label: 'PROJETOS' },
-  { id: 'about', label: 'SOBRE' },
-  { id: 'contact', label: 'DIAGNÓSTICO' },
+const navLinks = [
+  { name: 'Home', href: '#home' },
+  { name: 'Sobre', href: '#about' },
+  { name: 'Projetos', href: '#work' },
+  { name: 'Método', href: '#method' },
+  { name: 'Contato', href: '#contact' },
 ];
 
 export default function Navigation() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const activeSection = useActiveSection(NAV_LINKS.map(l => l.id));
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const activeSection = useActiveSection(navLinks.map(link => link.href.slice(1)));
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <>
-      <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'py-4' : 'py-8'}`}>
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <motion.a 
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            href="/" 
-            className="text-lg font-black tracking-tighter z-50"
+    <nav 
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+        isScrolled ? 'py-4 bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-900' : 'py-8 bg-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 md:px-24 flex justify-between items-center">
+        <a href="#home" className="font-display font-black text-2xl tracking-tighter text-white">
+          M.MARTINS
+        </a>
+
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center gap-12">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className={`text-[10px] font-mono uppercase tracking-[0.2em] transition-colors hover:text-white ${
+                activeSection === link.href.slice(1) ? 'text-white' : 'text-zinc-500'
+              }`}
+            >
+              {link.name}
+            </a>
+          ))}
+          <a
+            href="#contact"
+            className="px-6 py-2 bg-white text-black text-[10px] font-mono font-bold rounded-full hover:bg-zinc-200 transition-all"
           >
-            MIGUEL <span className="text-zinc-500">MARTINS</span>
-          </motion.a>
-          
-          {/* Desktop Nav - Floating Glass Bar */}
-          <motion.div 
+            START PROJECT
+          </a>
+        </div>
+
+        {/* Mobile Toggle */}
+        <button 
+          className="md:hidden text-white"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <X /> : <Menu />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="hidden md:flex items-center gap-1 p-1 rounded-full glass"
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-40 bg-zinc-950 flex flex-col items-center justify-center gap-8 md:hidden"
           >
-            {NAV_LINKS.map(link => (
-              <a 
-                key={link.id}
-                href={`#${link.id}`} 
-                className={`px-6 py-2 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase transition-all relative ${
-                  activeSection === link.id ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'
-                }`}
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-4xl font-display font-bold text-white hover:text-zinc-500 transition-colors"
               >
-                {link.label}
-                {activeSection === link.id && (
-                  <motion.div 
-                    layoutId="nav-pill"
-                    className="absolute inset-0 bg-white/10 rounded-full -z-10"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
+                {link.name}
               </a>
             ))}
           </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-4"
-          >
-            <a 
-              href="#contact"
-              className="hidden md:flex items-center gap-2 px-6 py-2.5 rounded-full bg-white text-black text-[10px] font-bold tracking-widest hover:bg-zinc-200 transition-colors"
-            >
-              DIAGNÓSTICO GRATUITO <ArrowUpRight size={14} />
-            </a>
-
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-3 rounded-full glass text-white z-50"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </motion.div>
-        </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-            animate={{ opacity: 1, backdropFilter: 'blur(20px)' }}
-            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
-            className="fixed inset-0 z-[45] bg-zinc-950/80 md:hidden flex flex-col justify-center px-12"
-          >
-            <div className="flex flex-col gap-6">
-              {NAV_LINKS.map((link, index) => (
-                <motion.a
-                  key={link.id}
-                  href={`#${link.id}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * index }}
-                  onClick={() => setIsMenuOpen(false)}
-                  className="text-5xl font-black tracking-tighter hover:text-zinc-500 transition-colors"
-                >
-                  {link.label}
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </nav>
   );
 }

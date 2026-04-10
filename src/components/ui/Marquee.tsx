@@ -2,12 +2,16 @@ import { motion } from 'motion/react';
 import { useRef, useState, useEffect } from 'react';
 
 const WORDS = [
-  "AUTOMAÇÃO FINANCEIRA",
-  "PROCESSOS EFICIENTES",
-  "REACT",
-  "SUPABASE",
-  "ANÁLISE DE DADOS",
-  "SISTEMAS PROPRIETÁRIOS",
+  "AUTOMAÇÃO DE PROCESSOS",
+  "ENGENHARIA DE SISTEMAS",
+  "EFICIÊNCIA OPERACIONAL",
+  "ROI GARANTIDO",
+  "PYTHON & NODE.JS",
+  "DASHBOARDS REAL-TIME",
+  "INTEGRAÇÃO DE APIs",
+  "MÁQUINAS DIGITAIS",
+  "ESCALABILIDADE",
+  "ESTRUTURAÇÃO DE DADOS"
 ];
 
 export default function Marquee() {
@@ -16,13 +20,12 @@ export default function Marquee() {
 
   useEffect(() => {
     if (marqueeRef.current) {
-      // O conteúdo é triplicado, então 1/3 do total = 1 repetição
       setContentWidth(marqueeRef.current.scrollWidth / 3);
     }
   }, []);
 
   return (
-    <div className="py-12 md:py-24 border-y border-zinc-800/50 overflow-hidden bg-zinc-950">
+    <div className="py-12 md:py-24 border-y border-zinc-900 overflow-hidden bg-zinc-950">
       <div className="flex whitespace-nowrap">
         <motion.div
           ref={marqueeRef}
@@ -31,7 +34,7 @@ export default function Marquee() {
             x: {
               repeat: Infinity,
               repeatType: "loop",
-              duration: 40,
+              duration: 20,
               ease: "linear",
             },
           }}
@@ -39,7 +42,7 @@ export default function Marquee() {
         >
           {[...WORDS, ...WORDS, ...WORDS].map((word, i) => (
             <div key={i} className="flex items-center gap-12 md:gap-32">
-              <span className="text-4xl md:text-8xl font-black tracking-tighter text-transparent stroke-zinc-900 stroke-1 hover:text-zinc-800 transition-all duration-700 cursor-default uppercase" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.05)' }}>
+              <span className="text-4xl md:text-8xl font-display font-black text-zinc-900 tracking-tighter hover:text-zinc-800 transition-all duration-700 cursor-default uppercase">
                 {word}
               </span>
               <div className="w-2 h-2 md:w-3 md:h-3 bg-zinc-900 rounded-full opacity-20" />

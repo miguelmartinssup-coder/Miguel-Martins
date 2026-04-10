@@ -2,104 +2,120 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
+const vertexShader = `
+  varying vec2 vUv;
+  varying float vDistortion;
+  uniform float uTime;
+  
+  // Simplex 3D Noise 
+  vec4 permute(vec4 x){return mod(((x*34.0)+1.0)*x, 289.0);}
+  vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+  float snoise(vec3 v){ 
+    const vec2  C = vec2(1.0/6.0, 1.0/3.0) ;
+    const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);
+    vec3 i  = floor(v + dot(v, C.yyy) );
+    vec3 x0 =   v - i + dot(i, C.xxx) ;
+    vec3 g = step(x0.yzx, x0.xyz);
+    vec3 l = 1.0 - g;
+    vec3 i1 = min( g.xyz, l.zxy );
+    vec3 i2 = max( g.xyz, l.zxy );
+    vec3 x1 = x0 - i1 + 1.0 * C.xxx;
+    vec3 x2 = x0 - i2 + 2.0 * C.xxx;
+    vec3 x3 = x0 - D.yyy;
+    i = mod(i, 289.0); 
+    vec4 p = permute( permute( permute( 
+               i.z + vec4(0.0, i1.z, i2.z, 1.0 ))
+             + i.y + vec4(0.0, i1.y, i2.y, 1.0 )) 
+             + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));
+    float n_ = 1.0/7.0;
+    vec3  ns = n_ * D.wyz - D.xzx;
+    vec4 j = p - 49.0 * floor(p * ns.z *ns.z);
+    vec4 x_ = floor(j * ns.z);
+    vec4 y_ = floor(j - 7.0 * x_ );
+    vec4 x = x_ *ns.x + ns.yyyy;
+    vec4 y = y_ *ns.x + ns.yyyy;
+    vec4 h = 1.0 - abs(x) - abs(y);
+    vec4 b0 = vec4( x.xy, y.xy );
+    vec4 b1 = vec4( x.zw, y.zw );
+    vec4 s0 = floor(b0)*2.0 + 1.0;
+    vec4 s1 = floor(b1)*2.0 + 1.0;
+    vec4 sh = -step(h, vec4(0.0));
+    vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;
+    vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;
+    vec3 p0 = vec3(a0.xy,h.x);
+    vec3 p1 = vec3(a0.zw,h.y);
+    vec3 p2 = vec3(a1.xy,h.z);
+    vec3 p3 = vec3(a1.zw,h.w);
+    vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2, p2), dot(p3,p3)));
+    p0 *= norm.x;
+    p1 *= norm.y;
+    p2 *= norm.z;
+    p3 *= norm.w;
+    vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+    m = m * m;
+    return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3) ) );
+  }
+
+  void main() {
+    vUv = uv;
+    vDistortion = snoise(vec3(position.xy * 0.5, uTime * 0.1));
+    vec3 newPosition = position + normal * vDistortion * 0.2;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+  }
+`;
+
+const fragmentShader = `
+  varying vec2 vUv;
+  varying float vDistortion;
+  uniform float uTime;
+  
+  void main() {
+    vec3 color1 = vec3(0.03, 0.03, 0.05); // Zinc 950 approx
+    vec3 color2 = vec3(0.1, 0.1, 0.15);   // Zinc 800 highlight
+    
+    float mixValue = vDistortion * 0.5 + 0.5;
+    vec3 finalColor = mix(color1, color2, mixValue);
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+  }
+`;
+
 export default function ThreeBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
-    
-    const isLowEnd = navigator.hardwareConcurrency <= 4 || window.innerWidth < 480;
-    const isTouch = window.matchMedia('(pointer: coarse)').matches;
-    if (isLowEnd || (isTouch && window.innerWidth < 640)) return;
-
-    if (!containerRef.current) return;
+    if (prefersReducedMotion || !containerRef.current) return;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     containerRef.current.appendChild(renderer.domElement);
 
-    const particlesGeometry = new THREE.BufferGeometry();
-    const count = window.innerWidth < 768 ? 800 : 3000;
-    const positions = new Float32Array(count * 3);
-    const radius = 4;
-
-    for (let i = 0; i < count; i++) {
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.acos(Math.random() * 2 - 1);
-      
-      positions[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i * 3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i * 3 + 2] = radius * Math.cos(phi);
-    }
-
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.012,
-      color: '#ffffff',
-      transparent: true,
-      opacity: 0.3,
-      blending: THREE.AdditiveBlending,
+    const geometry = new THREE.IcosahedronGeometry(2, 64);
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: {
+        uTime: { value: 0 },
+      },
+      wireframe: false,
     });
 
-    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particles);
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
 
-    camera.position.z = 8;
+    camera.position.z = 4;
 
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
-    let baseRotY = 0;
-    let baseRotX = 0;
-    let animId: number;
-
-    const handleMouseMove = (event: MouseEvent) => {
-      mouseX = (event.clientX / window.innerWidth - 0.5);
-      mouseY = (event.clientY / window.innerHeight - 0.5);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    let lastTime = 0;
-    const TARGET_FPS = 30;
-    const FRAME_INTERVAL = 1000 / TARGET_FPS;
-
-    const animate = (currentTime: number) => {
-      animId = requestAnimationFrame(animate);
-      
-      if (currentTime - lastTime < FRAME_INTERVAL) return;
-      lastTime = currentTime;
-
-      baseRotY = (baseRotY + 0.002) % (Math.PI * 2);
-      baseRotX = (baseRotX + 0.001) % (Math.PI * 2);
-
-      targetX += (mouseX * 0.8 - targetX) * 0.05;
-      targetY += (mouseY * 0.8 - targetY) * 0.05;
-
-      particles.rotation.y = baseRotY + targetX;
-      particles.rotation.x = baseRotX + targetY;
-
+    const animate = (time: number) => {
+      material.uniforms.uTime.value = time * 0.001;
+      mesh.rotation.y += 0.001;
       renderer.render(scene, camera);
+      requestAnimationFrame(animate);
     };
-
-    requestAnimationFrame(animate);
-
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        cancelAnimationFrame(animId);
-      } else {
-        requestAnimationFrame(animate);
-      }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
@@ -108,21 +124,22 @@ export default function ThreeBackground() {
     };
 
     window.addEventListener('resize', handleResize);
+    requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('resize', handleResize);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      cancelAnimationFrame(animId);
-      containerRef.current?.removeChild(renderer.domElement);
-      scene.clear();
       renderer.dispose();
+      geometry.dispose();
+      material.dispose();
+      if (containerRef.current) containerRef.current.removeChild(renderer.domElement);
     };
   }, [prefersReducedMotion]);
 
-  if (prefersReducedMotion) {
-    return <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_#1a1a1a_0%,_#050505_70%)]" />;
-  }
-
-  return <div ref={containerRef} className="fixed inset-0 -z-10 pointer-events-none opacity-40" />;
+  return (
+    <div 
+      ref={containerRef} 
+      className="fixed inset-0 -z-10 bg-zinc-950"
+      style={{ opacity: prefersReducedMotion ? 1 : 0.6 }}
+    />
+  );
 }

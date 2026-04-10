@@ -1,22 +1,28 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-type CursorVariant = 'default' | 'link' | 'project' | 'button';
-
 interface CursorContextType {
-  variant: CursorVariant;
-  setVariant: (v: CursorVariant) => void;
+  isHovering: boolean;
+  cursorLabel: string;
+  setHovering: (hovering: boolean, label?: string) => void;
 }
 
 export const CursorContext = createContext<CursorContextType>({
-  variant: 'default',
-  setVariant: () => {},
+  isHovering: false,
+  cursorLabel: '',
+  setHovering: () => {},
 });
 
 export function CursorProvider({ children }: { children: ReactNode }) {
-  const [variant, setVariant] = useState<CursorVariant>('default');
+  const [isHovering, setIsHovering] = useState(false);
+  const [cursorLabel, setCursorLabel] = useState('');
+
+  const setHovering = (hovering: boolean, label: string = '') => {
+    setIsHovering(hovering);
+    setCursorLabel(label);
+  };
 
   return (
-    <CursorContext.Provider value={{ variant, setVariant }}>
+    <CursorContext.Provider value={{ isHovering, cursorLabel, setHovering }}>
       {children}
     </CursorContext.Provider>
   );

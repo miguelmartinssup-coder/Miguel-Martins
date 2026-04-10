@@ -68,8 +68,8 @@ export default function ValueProp() {
         <div className="space-y-12">
           <div>
             <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.2em] mb-4 block">O CENÁRIO ATUAL</span>
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter leading-none mb-6">
-              O CUSTO DA <span className="text-zinc-800">INEFICIÊNCIA.</span>
+            <h2 className="text-[clamp(1.5rem,4vw,2.75rem)] font-black tracking-tighter leading-snug mb-6">
+              O CUSTO DA <span className="text-zinc-600">INEFICIÊNCIA</span>
             </h2>
             <p className="text-zinc-400 leading-relaxed">
               Manter processos manuais não é apenas lento — é caro. Cada minuto gasto em tarefas burocráticas é um minuto a menos focado no crescimento do seu negócio.
@@ -95,8 +95,8 @@ export default function ValueProp() {
         <div className="space-y-12">
           <div>
             <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.2em] mb-4 block">A MINHA ENTREGA</span>
-            <h2 className="text-3xl md:text-5xl font-black tracking-tighter leading-none mb-6">
-              ENGENHARIA DE <span className="text-white">ALTO IMPACTO.</span>
+            <h2 className="text-[clamp(1.5rem,4vw,2.75rem)] font-black tracking-tighter leading-snug mb-6 break-normal">
+              ENGENHARIA DE <span className="text-white">ALTO IMPACTO</span>
             </h2>
             <p className="text-zinc-400 leading-relaxed">
               Eu não apenas escrevo código. Eu desenho soluções estratégicas que atacam a raiz do problema e geram retorno sobre o investimento imediato.

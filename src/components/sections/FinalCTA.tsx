@@ -1,53 +1,45 @@
-import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
+import { useSplitTextReveal } from '../../hooks/useSplitTextReveal';
+import { ArrowUpRight } from 'lucide-react';
 import { CONTACT } from '../../config/contact';
 
 export default function FinalCTA() {
+  const h2Ref = useSplitTextReveal();
+
   return (
-    <section id="contact" className="py-24 md:py-40 px-6">
-      <div className="max-w-5xl mx-auto bg-white rounded-[2rem] p-12 md:p-24 text-center overflow-hidden relative">
-        {/* Background Accent */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-zinc-100 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl opacity-50" />
+    <section id="contact" className="relative py-32 md:py-64 px-6 md:px-24 bg-zinc-950 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto text-center">
+        <span className="font-mono text-[10px] text-zinc-600 uppercase tracking-[0.3em] block mb-12">Próximo Passo</span>
         
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="relative z-10"
+        <h2
+          ref={h2Ref as React.RefObject<HTMLHeadingElement>}
+          className="font-display text-[clamp(1.75rem,5vw,3.5rem)] font-extrabold tracking-[-0.04em] leading-[1.1] mb-16 text-white text-balance"
         >
-          <span className="text-zinc-500 font-mono text-[10px] uppercase tracking-[0.2em] mb-6 block">PRÓXIMO PASSO</span>
-          <h2 className="text-4xl md:text-7xl font-black text-black tracking-tighter leading-[0.9] mb-8">
-            PRONTO PARA ESCALAR <br />
-            SUA OPERAÇÃO?
-          </h2>
-          <p className="text-xl text-zinc-600 max-w-2xl mx-auto mb-12 font-light">
-            Agende um diagnóstico gratuito de 15 minutos. Vamos mapear seus gargalos e desenhar o caminho para a automação total.
-          </p>
-          
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6">
-            <a 
-              href="mailto:miguelmartins.sup@gmail.com"
-              className="w-full md:w-auto px-12 py-6 bg-black text-white font-bold rounded-full hover:bg-zinc-800 transition-all duration-300 flex items-center justify-center gap-3 group"
-            >
+          VAMOS ESCALAR SUA <br />
+          <span className="text-zinc-800">OPERAÇÃO?</span>
+        </h2>
+
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8">
+          <a
+            href={CONTACT.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative px-12 py-6 bg-white text-black font-bold rounded-full overflow-hidden transition-transform hover:scale-105"
+          >
+            <span className="relative z-10 flex items-center gap-3 text-xl">
               SOLICITAR DIAGNÓSTICO
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </a>
-            <a 
-              href={CONTACT.whatsapp} 
-              target="_blank"
-              className="w-full md:w-auto px-12 py-6 bg-transparent border border-zinc-200 text-black font-bold rounded-full hover:bg-zinc-50 transition-all duration-300"
-            >
-              FALAR NO WHATSAPP
-            </a>
-          </div>
+              <ArrowUpRight size={24} />
+            </span>
+          </a>
           
-          <div className="mt-16 pt-16 border-t border-zinc-100 flex flex-wrap justify-center gap-12 grayscale opacity-50">
-            <span className="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">Segurança de Dados</span>
-            <span className="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">Escalabilidade</span>
-            <span className="font-mono text-[10px] text-zinc-400 uppercase tracking-widest">Suporte 24/7</span>
+          <div className="flex flex-col items-center md:items-start gap-1">
+            <span className="font-mono text-[10px] text-zinc-600 uppercase tracking-widest">Resposta imediata via WhatsApp</span>
+            <span className="text-zinc-400 font-medium">{CONTACT.email}</span>
           </div>
-        </motion.div>
+        </div>
       </div>
+
+      {/* Background decoration */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-px bg-gradient-to-r from-transparent via-zinc-800 to-transparent" />
     </section>
   );
 }
